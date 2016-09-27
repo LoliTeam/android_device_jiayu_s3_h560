@@ -5,6 +5,8 @@ $(call inherit-product, device/common/gps/gps_us_supl.mk)
 $(call inherit-product, device/jiayu/s3_h560/vendor/copyfiles.mk)
 $(call inherit-product, vendor/jiayu/s3_h560/s3_h560-vendor-blobs.mk)
 
+LOCAL_PATH := device/jiayu/s3_h560
+
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
 # Device uses high-density artwork where available
