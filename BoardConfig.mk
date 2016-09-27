@@ -48,13 +48,23 @@ BOARD_CONNECTIVITY_VENDOR := MediaTek
 BOARD_USES_MTK_AUDIO := true
 
 # Kernel
+TARGET_KERNEL_ARCH := arm64
+KERNEL_ARCH := arm64
+TARGET_KERNEL_HEADER_ARCH := arm64
+TARGET_KERNEL_SOURCE := kernel/jiayu/s3_h560
+TARGET_KERNEL_CONFIG := h560_defconfig
+BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
+
+KERNEL_TOOLCHAIN := /home/gcc-linaro-5.2-aarch64-linux-gnu/bin
+KERNEL_TOOLCHAIN_PREFIX := aarch64-linux-gnu-
+
 TARGET_USES_64_BIT_BINDER := true
 TARGET_IS_64_BIT := true
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.selinux=permissive
 BOARD_KERNEL_BASE := 0x40078000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_MKBOOTIMG_ARGS := --base 0x40078000 --pagesize 2048 --kernel_offset 0x00008000 --ramdisk_offset 0x03f88000 --second_offset 0x00e88000 --tags_offset 0x0df88000 --board Bule
-TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/kernel
+#TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/kernel
 BOARD_CUSTOM_BOOTIMG := true
 
 # MKImage
