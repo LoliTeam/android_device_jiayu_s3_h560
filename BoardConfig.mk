@@ -8,34 +8,58 @@ USE_CAMERA_STUB := true
 TARGET_PROVIDES_INIT_RC := true
 # inherit from the proprietary version
 
+MTK_K64_SUPPORT := yes
+
 # Platform
 ARCH_ARM_HAVE_TLS_REGISTER := true
 TARGET_BOARD_PLATFORM := mt6752
+TARGET_BOOTLOADER_BOARD_NAME := mt6752
+MTK_BOARD_PLATFORMS += mt6752
 TARGET_NO_BOOTLOADER := true
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_NO_FACTORYIMAGE := true
 
-TARGET_LDPRELOAD += libxlog.so
+#TARGET_LDPRELOAD += libxlog.so
 
 # CPU
+ifneq ($(MTK_K64_SUPPORT),yes)
+ARCH := arm
+TARGET_ARCH := arm
+TARGET_CPU_VARIANT := cortex-a7
+TARGET_CPU_ABI := armeabi-v7a
+TARGET_CPU_ABI2 := armeabi
+TARGET_ARCH_VARIANT := armv7-a-neon
+TARGET_2ND_CPU_VARIANT := cortex-a53
+BOARD_KERNEL_CMDLINE := bootopt=64S3,32S1,32S1 androidboot.hardware=mt6752 androidboot.selinux=permissive
+BOARD_KERNEL_OFFSET := 0x00008000
+else
+ARCH := arm64
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
-TARGET_CPU_ABI2 := 
-TARGET_CPU_VARIANT := generic
-TARGET_CPU_SMP := true
-
+TARGET_CPU_ABI2 :=
+TARGET_CPU_VARIANT := cortex-a53
 TARGET_2ND_ARCH := arm
 TARGET_2ND_ARCH_VARIANT := armv7-a-neon
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := cortex-a53
-TARGET_BOARD_SUFFIX := _64
+TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-gnu-
+BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.hardware=mt6752 androidboot.selinux=permissive
 TARGET_USES_64_BIT_BINDER := true
+TARGET_IS_64_BIT :=true
+TARGET_BOARD_SUFFIX := _64
+TARGET_CPU_ABI_LIST := arm64-v8a,armeabi-v7a,armeabi
+TARGET_CPU_ABI_LIST_32_BIT := armeabi-v7a,armeabi
+TARGET_CPU_ABI_LIST_64_BIT := arm64-v8a
+TARGET_SUPPORTS_32_BIT_APPS := true
+TARGET_SUPPORTS_64_BIT_APPS := true
+BOARD_KERNEL_OFFSET := 0x00080000
+endif
 
 TARGET_CPU_CORTEX_A53 := true
-
-TARGET_BOOTLOADER_BOARD_NAME := mt6752
+ARCH_ARM_HAVE_TLS_REGISTER := true
+TARGET_CPU_SMP := true
 
 # MTK Hardware
 BOARD_HAS_MTK_HARDWARE := true
@@ -58,9 +82,6 @@ BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 KERNEL_TOOLCHAIN := /home/gcc-linaro-5.2-aarch64-linux-gnu/bin
 KERNEL_TOOLCHAIN_PREFIX := aarch64-linux-gnu-
 
-TARGET_USES_64_BIT_BINDER := true
-TARGET_IS_64_BIT := true
-BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.selinux=permissive
 BOARD_KERNEL_BASE := 0x40078000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_MKBOOTIMG_ARGS := --base 0x40078000 --pagesize 2048 --kernel_offset 0x00008000 --ramdisk_offset 0x03f88000 --second_offset 0x00e88000 --tags_offset 0x0df88000 --board Bule
@@ -197,9 +218,8 @@ TARGET_USERIMAGES_USE_EXT4 := true
 endif
 
 # Kernel OBJ WorkAround for build
-$(shell mkdir -p $(OUT)/obj/KERNEL_OBJ/usr)
+#$(shell mkdir -p $(OUT)/obj/KERNEL_OBJ/usr)
 
 # SELinux
 BOARD_SEPOLICY_DIRS := \
        device/jiayu/s3_h560/sepolicy
-
